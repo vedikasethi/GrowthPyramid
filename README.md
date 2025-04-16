@@ -1,1 +1,1 @@
-"# GrowthPyramid" 
+GrowthPyramid
