@@ -2,6 +2,7 @@ package com.example.CompanyManagement.mycontroller;
 
 import com.example.CompanyManagement.Mapping.CompanyMapping;
 import com.example.CompanyManagement.companyDTO.CompanyDTO;
+import com.example.CompanyManagement.companyDTO.CompanyIdDTO;
 import com.example.CompanyManagement.entity.Company;
 import com.example.CompanyManagement.repository.CompanyRepository;
 import com.example.CompanyManagement.service.CompanyService;
@@ -22,10 +23,10 @@ public class CompanyController {
     private final CompanyService companyService;
 
     @PostMapping("/register")
-    public ResponseEntity<CompanyDTO> registerCompany(@RequestBody CompanyDTO companyDTO) {
+    public ResponseEntity<CompanyIdDTO> registerCompany(@RequestBody CompanyDTO companyDTO) {
         Company company = CompanyMapping.toEntity(companyDTO);
         Company savedCompany = companyService.registerCompany(company);
-        return ResponseEntity.ok(CompanyMapping.toDTO(savedCompany));
+        return ResponseEntity.ok(CompanyMapping.toCompanyIDDTO(savedCompany));
     }
 
     @DeleteMapping("/delete/{id}")
@@ -53,10 +54,10 @@ public class CompanyController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<CompanyDTO>> getAllCompanies() {
+    public ResponseEntity<List<CompanyIdDTO>> getAllCompanies() {
         List<Company> companies = companyService.getAllCompanies();
-        List<CompanyDTO> companyDTOs = companies.stream()
-                .map(CompanyMapping::toDTO)
+        List<CompanyIdDTO> companyDTOs = companies.stream()
+                .map(CompanyMapping::toCompanyIDDTO)
                 .toList();
         return ResponseEntity.ok(companyDTOs);
     }

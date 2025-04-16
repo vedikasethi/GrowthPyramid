@@ -21,7 +21,7 @@ public class Company {
     private String username;
 
     @Column(length = 20, nullable = false, unique = true)
-    private Long password;
+    private String password;
 
     @Column(length = 20, nullable = false)
     private String companyName;
