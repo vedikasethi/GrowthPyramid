@@ -14,11 +14,13 @@
         <option value="$PROJECT_DIR$/EurekaServer/pom.xml" />
         <option value="$PROJECT_DIR$/eureka-server/pom.xml" />
         <option value="$PROJECT_DIR$/api-gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/Collaboration-Request/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/API-Gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/Currency/pom.xml" />
         <option value="$PROJECT_DIR$/CustomerManagement/pom.xml" />
         <option value="$PROJECT_DIR$/EurekaServer/pom.xml" />
         <option value="$PROJECT_DIR$/UserManagement/pom.xml" />

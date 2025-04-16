@@ -12,18 +12,21 @@ spring:
           uri: http://localhost:8082
           predicates:
             - Path=/api/company/**
+            -
         - id: order-service
           uri: http://localhost:8084
           predicates:
             - Path=/api/order/**
+            -
         - id: analytics-service
           uri: http://localhost:8081
           predicates:
             - Path=/api/analytics/**
-        - id: currency-service
+            -
+        - id: Collaboration-Request
           uri: http://localhost:8083
           predicates:
-            - Path=/api/currency/**
+            - Path=/api/Collaboration-Request/**
 
       discovery:
         locator:
