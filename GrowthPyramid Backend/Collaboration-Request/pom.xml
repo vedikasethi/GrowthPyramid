@@ -77,6 +77,11 @@
 			<artifactId>springdoc-openapi-ui</artifactId>
 			<version>1.6.12</version> <!-- Check for the latest version -->
 		</dependency>
+		<!-- Spring Boot Actuator -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
