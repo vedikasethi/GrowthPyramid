@@ -1,0 +1,58 @@
+services:
+  eureka-server:
+    build:
+      context: ./eureka-server
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+    container_name: eureka-server
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    container_name: api-gateway
+    depends_on:
+      - eureka-server
+
+  order-management:
+    build:
+      context: ./OrderManagement
+      dockerfile: Dockerfile
+    ports:
+      - "8084:8084"
+    container_name: order-management
+    depends_on:
+      - eureka-server
+
+  analytics:
+    build:
+      context: ./Analytics
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    container_name: analytics
+    depends_on:
+      - eureka-server
+
+  collaboration-request:
+    build:
+      context: ./Collaboration-Request
+      dockerfile: Dockerfile
+    ports:
+      - "8083:8083"
+    container_name: collaboration-request
+    depends_on:
+      - eureka-server
+
+  company-management:
+    build:
+      context: ./CompanyManagement
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    container_name: company-management
+    depends_on:
+      - eureka-server
