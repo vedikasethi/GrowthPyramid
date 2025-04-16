@@ -77,10 +77,10 @@ public ResponseEntity<CompanyDTO> updateCompany(@PathVariable Long id, @RequestB
 }
 
     @GetMapping("/{id:[0-9]+}")
-    public ResponseEntity<CompanyDTO> getCompanyById(@PathVariable Long id) {
+    public ResponseEntity<CompanyIdDTO> getCompanyById(@PathVariable Long id) {
         Company company = companyService.getCompanyById(id);
         return company != null
-                ? ResponseEntity.ok(CompanyMapping.toDTO(company))
+                ? ResponseEntity.ok(CompanyMapping.toCompanyIDDTO(company))
                 : ResponseEntity.badRequest().build();
     }
 

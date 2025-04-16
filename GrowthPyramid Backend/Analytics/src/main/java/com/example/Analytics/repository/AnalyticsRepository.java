@@ -12,9 +12,9 @@ import java.util.List;
 public interface AnalyticsRepository extends JpaRepository<Analytics, Long> {
 
     // 1️⃣ Total Sales Per Month
-    @Query(value = "SELECT DATE_FORMAT(order_date, '%Y-%m') AS month, SUM(amount) AS total_sales " +
+    @Query(value = "SELECT DATE_FORMAT(orderdate, '%Y-%m') AS month, SUM(amount) AS total_sales " +
             "FROM orders WHERE company_id = :companyId " +
-            "GROUP BY DATE_FORMAT(order_date, '%Y-%m')", nativeQuery = true)
+            "GROUP BY DATE_FORMAT(orderdate, '%Y-%m')", nativeQuery = true)
     List<Object[]> getTotalSalesPerMonth(@Param("companyId") Long companyId);
 
     // 2️⃣ Top Selling Product

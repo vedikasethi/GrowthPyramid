@@ -1,7 +1,8 @@
 package com.example.OrderManagement.OrderRequestDTO;
 
 import lombok.*;
-import org.springframework.stereotype.Component;
+
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -16,5 +17,7 @@ public class OrderDTO {
     // Return the companyId field
     @Getter
     private Long companyId; // Add the companyId field
+    private Date orderdate; // Field to store the order creation date and time
+
 
 }

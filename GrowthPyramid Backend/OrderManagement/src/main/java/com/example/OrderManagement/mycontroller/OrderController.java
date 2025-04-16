@@ -1,9 +1,6 @@
 package com.example.OrderManagement.mycontroller;
 
 
-import com.example.CompanyManagement.Mapping.CompanyMapping;
-import com.example.CompanyManagement.companyDTO.CompanyDTO;
-import com.example.CompanyManagement.entity.Company;
 import com.example.OrderManagement.OrderRequestDTO.OrderDTO;
 import com.example.OrderManagement.entity.Order;
 import com.example.OrderManagement.service.OrderService;
@@ -23,10 +20,13 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @PostMapping("/create/{id}")
-    public ResponseEntity<Order> createOrder(@PathVariable Long id, @RequestBody OrderDTO orderDTO) {
-        Order createdOrder = orderService.createOrder(orderDTO, id);
-        return ResponseEntity.ok(createdOrder);
+    @PostMapping("/create")
+    public ResponseEntity<String> createOrder(@RequestBody OrderDTO orderDTO) {
+        try {
+            Order createdOrder = orderService.createOrder(orderDTO);
+            return ResponseEntity.ok("Order Created Successfully with ID: " + createdOrder.getOrderId());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error: " + e.getMessage());
+        }
     }
-
 }
