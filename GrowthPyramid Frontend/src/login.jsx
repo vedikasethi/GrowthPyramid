@@ -4,29 +4,19 @@ import { FcGoogle } from "react-icons/fc";
 import Navbar from "./components/Navbar"; // Adjust the import path as necessary
 
 export default function Login() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError(null);
 
-    if (!validateEmail(email)) {
-      setError("Please enter a valid email address.");
-      return;
-    }
-
     try {
-      const response = await fetch("https://309168be-6c2b-4bd4-a582-2d144a24d4bb.mock.pstmn.io/api/collaboration/respond/4?status=ACCEPTED", {
+      const response = await fetch("http://localhost:8080/api/company/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ username, password }),
       });
 
       if (response.ok) {
@@ -66,13 +56,12 @@ export default function Login() {
 
           <form className="mt-6" onSubmit={handleLogin}>
             <div>
-              <label className="block text-gray-600">Email</label>
+              <label className="block text-gray-600">Username</label>
               <input
-                type="email"
+                type="text"
                 className="w-full mt-2 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
             </div>
 
@@ -83,7 +72,6 @@ export default function Login() {
                 className="w-full mt-2 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
               />
             </div>
 
