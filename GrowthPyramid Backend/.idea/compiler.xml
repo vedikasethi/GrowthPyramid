@@ -16,6 +16,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="Authentication" target="21" />
       <module name="Currency" target="21" />
       <module name="UserManagement" target="17" />
     </bytecodeTargetLevel>
@@ -23,6 +24,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="Analytics" options="-parameters" />
+      <module name="Authentication" options="-parameters" />
       <module name="Collaboration-Request" options="-parameters" />
       <module name="CompanyManagement" options="-parameters" />
       <module name="Currency" options="-parameters" />

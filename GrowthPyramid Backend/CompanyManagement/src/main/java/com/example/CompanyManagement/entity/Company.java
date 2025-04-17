@@ -20,7 +20,7 @@ public class Company {
     @Column(length = 20, nullable = false, unique = true)
     private String username;
 
-    @Column(length = 20, nullable = false, unique = true)
+    @Column(nullable = false, length = 60) // Ensure sufficient length for BCrypt
     private String password;
 
     @Column(length = 20, nullable = false)

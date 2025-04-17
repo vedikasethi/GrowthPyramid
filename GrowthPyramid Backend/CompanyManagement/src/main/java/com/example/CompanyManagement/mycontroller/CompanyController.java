@@ -4,6 +4,7 @@ import com.example.CompanyManagement.Mapping.CompanyMapping;
 import com.example.CompanyManagement.companyDTO.CompanyDTO;
 import com.example.CompanyManagement.companyDTO.CompanyIdDTO;
 import com.example.CompanyManagement.companyDTO.CompanyRegisterDTO;
+import com.example.CompanyManagement.companyDTO.LoginDTO;
 import com.example.CompanyManagement.entity.Company;
 import com.example.CompanyManagement.repository.CompanyRepository;
 import com.example.CompanyManagement.service.CompanyService;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,19 +20,24 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/company")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000") // Frontend origin
 public class CompanyController {
 
     @Autowired
     private CompanyRepository companyRepository;
     private final CompanyService companyService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @PostMapping("/register")
     public ResponseEntity<?> registerCompany(@RequestBody CompanyRegisterDTO registerDTO) {
         try {
-        if (registerDTO.getBalance() == null) {
-            registerDTO.setBalance(String.valueOf(0L)); // Default to 0
-        }
+            if (registerDTO.getBalance() == null) {
+                registerDTO.setBalance(String.valueOf(0L)); // Default to 0
+            }
+            // Encrypt the password before saving
+            registerDTO.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
+
             Company company = CompanyMapping.toEntity(registerDTO);
             Company savedCompany = companyService.registerCompany(company);
             return ResponseEntity.ok(CompanyMapping.toCompanyIDDTO(savedCompany));
@@ -59,7 +66,7 @@ public class CompanyController {
             existingCompany.setUsername(companyDTO.getUsername());
         }
         if (companyDTO.getPassword() != null) {
-            existingCompany.setPassword(companyDTO.getPassword());
+            existingCompany.setPassword(passwordEncoder.encode(companyDTO.getPassword()));
         }
         if (companyDTO.getCompanyName() != null) {
             existingCompany.setCompanyName(companyDTO.getCompanyName());
@@ -104,5 +111,20 @@ public class CompanyController {
         return ResponseEntity.ok(companyDTOs);
     }
 
+
+    @PostMapping("/login")
+public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
+        Company company = companyRepository.findByUsername(loginDTO.getUsername());
+        if (company == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+        }
+
+        boolean isPasswordValid = passwordEncoder.matches(loginDTO.getPassword(), company.getPassword());
+        if (!isPasswordValid) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+        }
+
+        return ResponseEntity.ok(CompanyMapping.toCompanyIDDTO(company));
+    }
 
 }

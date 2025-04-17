@@ -16,7 +16,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/collaboration")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000") // Frontend origin
 public class CollaborationController {
 
     private final CollaborationService service;
