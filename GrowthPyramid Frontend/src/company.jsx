@@ -116,8 +116,11 @@ const Company = () => {
                                 color="primary"
                                 onClick={handleOpenModal}
                                 className="mt-4"
+                                disabled={!localStorage.getItem("company")}
                             >
-                                Send Collaboration Request
+                                {localStorage.getItem("company")
+                                    ? "Send Collaboration Request"
+                                    : "Login to send Collaboration Request"}
                             </Button>
                         </div>
                     )}
@@ -189,18 +192,18 @@ const Company = () => {
                     <Box sx={{ margin: 0, padding: 3 }}>
                         <Grid container spacing={3}>
                             <Grid item md={8}>
-                                <TotalSales />
+                                <TotalSales id={id} />
                             </Grid>
                             <Grid item md={4}>
-                                <SalesByCity />
+                                <SalesByCity id={id} />
                             </Grid>
                         </Grid>
                         <Grid container spacing={3} sx={{ marginTop: 3 }}>
                             <Grid item md={6}>
-                                <CurrentCurrency />
+                                <CurrentCurrency id={id} />
                             </Grid>
                             <Grid item md={6}>
-                                <TopSellingProduct />
+                                <TopSellingProduct  id={id}/>
                             </Grid>
                         </Grid>
                     </Box>

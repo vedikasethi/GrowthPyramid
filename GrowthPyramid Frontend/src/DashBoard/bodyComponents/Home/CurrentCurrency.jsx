@@ -26,7 +26,7 @@ export default function CurrentCurrency() {
           setLoading(false);
         }
       } else {
-        setError("No user data found in localStorage.");
+        setError("Please Login to View This information.");
         setLoading(false);
       }
     };

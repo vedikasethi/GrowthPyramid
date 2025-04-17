@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import ApexCharts from "react-apexcharts";
 import axios from "axios";
 
-export default function SalesByCity() {
+export default function SalesByCity({ id }) {
   const [donutOption, setDonutOption] = useState({
     labels: [],
     legend: {
@@ -18,11 +18,14 @@ export default function SalesByCity() {
 
   useEffect(() => {
     async function fetchData() {
-      const user = localStorage.getItem("company");
-      if (user) {
-        const parsedUser = JSON.parse(user);
+      const companyId = id || (() => {
+        const user = localStorage.getItem("company");
+        return user ? JSON.parse(user).companyId : null;
+      })();
+
+      if (companyId) {
         try {
-          const response = await axios.get("http://localhost:8080/api/analytics/totalsalesbycity/" + parsedUser.companyId);
+          const response = await axios.get(`http://localhost:8080/api/analytics/totalsalesbycity/${companyId}`);
           const data = response.data;
 
           // Transforming the API response to match the required format
@@ -41,7 +44,7 @@ export default function SalesByCity() {
     }
 
     fetchData();
-  }, []);
+  }, [id]);
 
   return (
     <Box

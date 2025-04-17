@@ -3,17 +3,24 @@ import React, { useEffect, useState } from "react";
 import ApexCharts from "react-apexcharts";
 import axios from "axios";
 
-export default function TotalSales() {
+export default function TotalSales({ id }) {
   const [options, setOptions] = useState(null);
   const [series, setSeries] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
-      const userString = localStorage.getItem("company"); // Renamed to avoid conflict
-      if (userString) {
-        const user = JSON.parse(userString); // Use a different name for the parsed object
+      const companyId = id || (() => {
+        const userString = localStorage.getItem("company");
+        if (userString) {
+          const user = JSON.parse(userString);
+          return user.companyId;
+        }
+        return null;
+      })();
+
+      if (companyId) {
         try {
-          const response = await axios.get("http://localhost:8080/api/analytics/totalsalespermonth/" + user.companyId);
+          const response = await axios.get("http://localhost:8080/api/analytics/totalsalespermonth/" + companyId);
           const data = response.data;
 
           // Transform the API response to match the required format
@@ -42,7 +49,7 @@ export default function TotalSales() {
     }
 
     fetchData();
-  }, []);
+  }, [id]);
 
   if (!options || series.length === 0) {
     return <div>Loading...</div>;

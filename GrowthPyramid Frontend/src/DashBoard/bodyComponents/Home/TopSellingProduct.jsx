@@ -10,17 +10,20 @@ import {
   Typography,
 } from "@mui/material";
 import axios from "axios";
-export default function TopSellingProduct() {
+export default function TopSellingProduct({ id }) {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const user = localStorage.getItem("company");
-      if (user) {
-        const parsedUser = JSON.parse(user);
+      const companyId = id || (() => {
+        const user = localStorage.getItem("company");
+        return user ? JSON.parse(user).companyId : null;
+      })();
+
+      if (companyId) {
         try {
           const response = await axios.get(
-            "http://localhost:8080/api/analytics/topsellingproduct/" + parsedUser.companyId
+            "http://localhost:8080/api/analytics/topsellingproduct/" + companyId
           );
           const formattedProducts = response.data.map((item) => ({
             name: item[0],
@@ -36,7 +39,7 @@ export default function TopSellingProduct() {
     };
 
     fetchProducts();
-  }, []);
+  }, [id]);
 
   return (
     <Box
