@@ -8,7 +8,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CompanyDTO {
+public class CompanyIdDTO {
+    private String companyId;
     private String username;
     private String companyName;
     private String category;

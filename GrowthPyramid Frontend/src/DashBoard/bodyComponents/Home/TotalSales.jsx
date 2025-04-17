@@ -3,47 +3,53 @@ import React, { useEffect, useState } from "react";
 import ApexCharts from "react-apexcharts";
 import axios from "axios";
 
-export default function TotalSales() {
+export default function TotalSales({ id }) {
   const [options, setOptions] = useState(null);
   const [series, setSeries] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
-      const user = localStorage.getItem("company");
-      if (user) {
-        const user = JSON.parse(user);
-      try {
-        const response = await axios.get("https://localhost:8080/api/analytics/totalsales/" + user.companyId);
-        const data = response.data;
+      const companyId = id || (() => {
+        const userString = localStorage.getItem("company");
+        if (userString) {
+          const user = JSON.parse(userString);
+          return user.companyId;
+        }
+        return null;
+      })();
 
-        // Sample API response structure:
-        // {
-        //   "options": {
-        //     "chart": {
-        //       "id": "basic-line"
-        //     },
-        //     "xaxis": {
-        //       "categories": ["Jan", "Feb", "Mar", "Apr", "May"]
-        //     }
-        //   },
-        //   "series": [
-        //     {
-        //       "name": "Sales",
-        //       "data": [30, 40, 35, 50, 49]
-        //     }
-        //   ]
-        // }
+      if (companyId) {
+        try {
+          const response = await axios.get("http://localhost:8080/api/analytics/totalsalespermonth/" + companyId);
+          const data = response.data;
 
-        // Assuming the API response contains `options` and `series` data
-        setOptions(data.options);
-        setSeries(data.series);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }}
+          // Transform the API response to match the required format
+          const categories = data.map(item => item[0]); // Extract month names
+          const seriesData = data.map(item => item[1]); // Extract sold quantity amounts
+
+          setOptions({
+            chart: {
+              id: "basic-line",
+            },
+            xaxis: {
+              categories: categories,
+            },
+          });
+
+          setSeries([
+            {
+              name: "Sales",
+              data: seriesData,
+            },
+          ]);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      }
     }
 
     fetchData();
-  }, []);
+  }, [id]);
 
   if (!options || series.length === 0) {
     return <div>Loading...</div>;

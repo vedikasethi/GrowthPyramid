@@ -30,8 +30,6 @@ export default function Navbar() {
   <div className="container mx-auto max-w-[1344px] relative">
     <div className="h-16 md:h-20 p-5 md:py-6 lg:px-5 flex items-center justify-between z-20 bg-[#05ABB6] relative">
       
-
-      {/* Hamburger */}
       <div
         onClick={handleOpen}
         className={`${
@@ -43,37 +41,52 @@ export default function Navbar() {
         <span className="transition-all duration-500 ease-in-out h-[2px] w-5 bg-white rounded-full"></span>
       </div>
 
-      {/* Menu */}
-      <div className="hidden md:flex items-center md:gap-4 lg:gap-8 text-white text-sm lg:text-base font-body">
-        <a href="/#" className="navlink">
-          Home
-        </a>
-        <a href="/trending-companies" className="navlink">
-          Trending Companies
-        </a>
-        <a href="/creds" className="navlink active-navlink">
-          Buy Creds!
-        </a>
+      <div className="hidden md:flex items-center justify-between w-full text-white text-sm lg:text-base font-body">
+        <div className="flex items-center gap-4 lg:gap-8">
+          <a href="/#" className="navlink">
+            Home
+          </a>
+          <a href="/trending-companies" className="navlink">
+            Trending Companies
+          </a>
+          <a href="/creds" className="navlink active-navlink">
+            Buy Creds!
+          </a>
+        </div>
+        <div className="flex items-center gap-4 lg:gap-[25px] text-sm lg:text-base font-head font-medium">
+          {localStorage.getItem("company") ? (
+            <div className="flex items-center gap-4">
+              <p className="text-white">Hi {JSON.parse(localStorage.getItem("company")).username}</p>
+              <button
+                onClick={() => {
+                  localStorage.removeItem("company");
+                  window.location.reload();
+                }}
+                className="text-white underline cursor-pointer"
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-4">
+              <a href="/login">
+                <p className="text-white underline cursor-pointer">Login</p>
+              </a>
+              <a href="/sign-up">
+                <button className="text-[#05ABB6] bg-white py-2.5 px-4">
+                  Sign up
+                </button>
+              </a>
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* Button */}
-      <div className="hidden md:flex md:gap-4 lg:gap-[25px] items-center text-sm lg:text-base font-head font-medium">
-        <a href="login">
-          <p className="text-white underline cursor-pointer">Login</p>
-        </a>
-        <a href="sign-up">
-          <button className="text-[#05ABB6] bg-white md:py-2.5 px-4 py-3.5 px-[25px]">
-            Sign up
-          </button>
-        </a>
-      </div>
-    </div>
-
-    {/* Navbar Menu (Mobile) */}
     <NavbarDropdown isOpen={isOpen} />
   </div>
-</nav>
+  </div>
 
+</nav>
 
   );
 }

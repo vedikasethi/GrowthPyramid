@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import ApexCharts from "react-apexcharts";
 import axios from "axios";
 
-export default function SalesByCity() {
+export default function SalesByCity({ id }) {
   const [donutOption, setDonutOption] = useState({
     labels: [],
     legend: {
@@ -18,29 +18,33 @@ export default function SalesByCity() {
 
   useEffect(() => {
     async function fetchData() {
-      const user = localStorage.getItem("company");
-      if (user) {
-        const user = JSON.parse(user);
+      const companyId = id || (() => {
+        const user = localStorage.getItem("company");
+        return user ? JSON.parse(user).companyId : null;
+      })();
+
+      if (companyId) {
         try {
-          const response = await axios.get("https://localhost:8080/api/analytics/salesbycity/" + user.companyId);
+          const response = await axios.get(`http://localhost:8080/api/analytics/totalsalesbycity/${companyId}`);
           const data = response.data;
 
-          // Assuming the API returns data in the format:
-          // { cities: ["Oujda", "Nador", "Berkan", "Casablanca"], sales: [44, 55, 13, 33] }L̥
+          // Transforming the API response to match the required format
+          const cities = data.map((item) => item[0]);
+          const sales = data.map((item) => item[1]);
+
           setDonutOption((prev) => ({
             ...prev,
-            labels: data.cities,
+            labels: cities,
           }));
-          setDonutSeries(data.sales);
+          setDonutSeries(sales);
         } catch (error) {
           console.error("Error fetching sales by city data:", error);
         }
-
       }
     }
 
     fetchData();
-  }, [user]);
+  }, [id]);
 
   return (
     <Box

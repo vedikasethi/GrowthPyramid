@@ -10,6 +10,7 @@ import CommBlog from './comm-blog'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import ChatApp from './components/Chat/ChatApp'
+import Company from './company'
 
 import UserDashBoard from "./DashBoard/bodyComponents/Home/Home";
 import Inventory from "./DashBoard/bodyComponents/Inventory/Inventory";
@@ -32,6 +33,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path='/trending-companies' element={<TrendingCompanies />} />
           <Route path='/resources' element={<Resources />} />
           <Route path='/blog' element={<CommBlog />} />
+          <Route path='/company/:id' element={<Company />} />
           <Route path="/chat-tea" element={<ChatApp room="tea" />} />
           <Route path="/chat-biscuit" element={<ChatApp room="biscuit" />} />
           <Route path="/chat-coffee" element={<ChatApp room="coffee" />} />

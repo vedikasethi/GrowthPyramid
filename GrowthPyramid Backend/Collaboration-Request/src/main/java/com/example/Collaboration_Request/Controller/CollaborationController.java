@@ -6,9 +6,12 @@ import com.example.Collaboration_Request.DTO.CreateCollaborationRequestDTO;
 import com.example.Collaboration_Request.entity.RequestStatus;
 import com.example.Collaboration_Request.service.CollaborationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/collaboration")
@@ -18,24 +21,42 @@ public class CollaborationController {
     private final CollaborationService service;
 
     @PostMapping("/send")
-    public CollaborationRequestDTO sendRequest(@RequestBody CreateCollaborationRequestDTO dto) {
-        return service.sendRequest(dto);
+    public ResponseEntity<?> sendRequest(@RequestBody CreateCollaborationRequestDTO dto) {
+        try {
+            CollaborationRequestDTO response = service.sendRequest(dto);
+            return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @GetMapping("/received/{companyId}")
-    public List<CollaborationRequestDTO> getReceived(@PathVariable Long companyId) {
-        return service.getRequestsReceived(companyId);
+    public ResponseEntity<?> getReceived(@PathVariable Long companyId) {
+        try {
+            List<CollaborationRequestDTO> requests = service.getRequestsReceived(companyId);
+            return ResponseEntity.ok(requests);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @GetMapping("/sent/{companyId}")
-    public List<CollaborationRequestDTO> getSent(@PathVariable Long companyId) {
-        return service.getRequestsSent(companyId);
+    public ResponseEntity<?> getSent(@PathVariable Long companyId) {
+        try {
+            List<CollaborationRequestDTO> requests = service.getRequestsSent(companyId);
+            return ResponseEntity.ok(requests);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @PostMapping("/respond/{requestId}")
-    public CollaborationRequestDTO respond(
-            @PathVariable Long requestId,
-            @RequestParam RequestStatus status) {
-        return service.updateStatus(requestId, status);
+    public ResponseEntity<?> respond(@PathVariable Long requestId, @RequestParam RequestStatus status) {
+        try {
+            CollaborationRequestDTO updatedRequest = service.respond(requestId, status);
+            return ResponseEntity.ok(updatedRequest);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 }

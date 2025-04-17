@@ -1,21 +1,19 @@
 package com.example.OrderManagement.OrderMapping;
 
+import com.example.CompanyManagement.entity.Company;
 import com.example.OrderManagement.OrderRequestDTO.OrderDTO;
 import com.example.OrderManagement.entity.Order;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class OrderMapping {
 
-    public static Order toEntity(OrderDTO dto, Long companyId) {
+    public static Order toEntity(OrderDTO dto, Company company) {
         return Order.builder()
-                .companyId(companyId) // Use the companyId parameter
                 .productName(dto.getProductName())
                 .amount(dto.getAmount())
                 .quantity(dto.getQuantity())
                 .city(dto.getCity())
+                .orderdate(dto.getOrderdate())
+                .company(company) // Set the Company entity
                 .build();
     }
 
@@ -25,7 +23,8 @@ public class OrderMapping {
                 .amount(order.getAmount())
                 .quantity(order.getQuantity())
                 .city(order.getCity())
-                .companyId(order.getCompanyId()) // Include companyId in the DTO
+                .companyId(order.getCompany().getCompanyID()) // Get companyId from the Company entity
+                .orderdate(order.getOrderdate())
                 .build();
     }
 }

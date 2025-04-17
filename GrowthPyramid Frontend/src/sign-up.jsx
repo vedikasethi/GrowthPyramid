@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { FcGoogle } from "react-icons/fc";
 import Navbar from "./components/Navbar"; // Adjust the import path as necessary
 export default function SignUp() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [category, setCategory] = useState("");
@@ -23,7 +23,7 @@ export default function SignUp() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          username: email, // Assuming username is the email
+          username, // Assuming username is the email
           password,
           companyName,
           category,
@@ -36,6 +36,8 @@ export default function SignUp() {
       });
   
       if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem("company", JSON.stringify(data));
         alert("Sign-up successful!");
         window.location.href = "./dashboard"; // Redirect to the dashboard
       } else {
@@ -67,12 +69,12 @@ export default function SignUp() {
           
           <form className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4" onSubmit={handleSignUp}>
             <div>
-              <label className="block text-gray-600">Email</label>
+              <label className="block text-gray-600">Username</label>
               <input
-                type="email"
+                type="text"
                 className="w-full mt-2 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 required
               />
             </div>

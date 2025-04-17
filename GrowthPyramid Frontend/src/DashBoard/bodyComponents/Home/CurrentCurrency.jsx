@@ -9,12 +9,24 @@ export default function CurrentCurrency() {
 
   useEffect(() => {
     const fetchCurrency = async () => {
-      try {
-        const response = await axios.get("https://localhost:8080/api/currency");
-        setBalance(response.data.balance); // Assuming the API returns { balance: <value> }
-      } catch (err) {
-        setError("Failed to fetch currency data.");
-      } finally {
+      const user = localStorage.getItem("company");
+      if (user) {
+        const parsedUser = JSON.parse(user);
+        try {
+          const response = await axios.get("http://localhost:8080/api/company/" + parsedUser.companyId);
+          const data = response.data;
+          if (data && data.balance !== undefined) {
+            setBalance(data.balance); // Extracting balance from the API response
+          } else {
+            setError("Invalid data format received from API.");
+          }
+        } catch (err) {
+          setError("Failed to fetch currency data.");
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        setError("Please Login to View This information.");
         setLoading(false);
       }
     };

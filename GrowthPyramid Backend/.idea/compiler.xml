@@ -11,19 +11,12 @@
         <module name="CompanyManagement" />
         <module name="eureka-server" />
         <module name="Analytics" />
-        <module name="OrderManagement" />
-      </profile>
-      <profile name="Annotation profile for Collaboration-Request" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar" />
-        </processorPath>
         <module name="Collaboration-Request" />
+        <module name="OrderManagement" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="Authentication" target="21" />
       <module name="Currency" target="21" />
       <module name="UserManagement" target="17" />
     </bytecodeTargetLevel>
@@ -31,6 +24,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="Analytics" options="-parameters" />
+      <module name="Authentication" options="-parameters" />
       <module name="Collaboration-Request" options="-parameters" />
       <module name="CompanyManagement" options="-parameters" />
       <module name="Currency" options="-parameters" />
