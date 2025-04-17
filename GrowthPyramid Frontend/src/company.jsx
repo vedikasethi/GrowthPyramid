@@ -111,17 +111,19 @@ const Company = () => {
                                     </ul>
                                 </div>
                             </div>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={handleOpenModal}
-                                className="mt-4"
-                                disabled={!localStorage.getItem("company")}
-                            >
-                                {localStorage.getItem("company")
-                                    ? "Send Collaboration Request"
-                                    : "Login to send Collaboration Request"}
-                            </Button>
+                            {!(localStorage.getItem("company") && JSON.parse(localStorage.getItem("company")).companyId === id) && (
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={handleOpenModal}
+                                    className="mt-4"
+                                    disabled={!localStorage.getItem("company")}
+                                >
+                                    {localStorage.getItem("company")
+                                        ? "Send Collaboration Request"
+                                        : "Login to send Collaboration Request"}
+                                </Button>
+                            )}
                         </div>
                     )}
                 </div>
@@ -203,7 +205,7 @@ const Company = () => {
                                 <CurrentCurrency id={id} />
                             </Grid>
                             <Grid item md={6}>
-                                <TopSellingProduct  id={id}/>
+                                <TopSellingProduct id={id} />
                             </Grid>
                         </Grid>
                     </Box>
