@@ -4,7 +4,6 @@ import com.example.CompanyManagement.entity.Company;
 import com.example.CompanyManagement.repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,11 +13,13 @@ import java.util.Optional;
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
-    private final RestTemplate restTemplate;
 
-    // Register a new company
     public Company registerCompany(Company company) {
-        return companyRepository.save(company);
+        try {
+            return companyRepository.save(company);
+        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+            throw new IllegalArgumentException("error: " + e.getMostSpecificCause());
+        }
     }
 
     // Delete a company by ID

@@ -1,4 +1,5 @@
 package com.example.Collaboration_Request.entity;
+import com.example.CompanyManagement.entity.Company;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,8 +18,13 @@ public class CollaborationRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long fromCompanyId;
-    private Long toCompanyId;
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "from_company_id", nullable = false)
+    private Company fromCompany;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "to_company_id", nullable = false)
+    private Company toCompany;
 
     @Column(length = 500)
     private String message;

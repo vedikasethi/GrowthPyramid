@@ -10,7 +10,6 @@ import lombok.*;
 @Builder
 public class CompanyDTO {
     private String username;
-    private String password;
     private String companyName;
     private String category;
     private String description;
@@ -18,5 +17,6 @@ public class CompanyDTO {
     private String contactNumber;
     private String contactMailId;
     private String contactDesignation;
+    private String balance;
 }
 

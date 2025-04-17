@@ -13,20 +13,19 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/orders")
 @RequiredArgsConstructor
-
-
+@CrossOrigin(origins = "http://localhost:3000")
 public class OrderController {
 
     @Autowired
     private OrderService orderService;
 
     @PostMapping("/create")
-    public ResponseEntity<String> createOrder(@RequestBody OrderDTO orderDTO) {
+    public ResponseEntity<?> createOrder(@RequestBody OrderDTO orderDTO) {
         try {
             Order createdOrder = orderService.createOrder(orderDTO);
-            return ResponseEntity.ok("Order Created Successfully with ID: " + createdOrder.getOrderId());
+            return ResponseEntity.ok(createdOrder);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("error: " + e.getMessage());
         }
     }
 }
