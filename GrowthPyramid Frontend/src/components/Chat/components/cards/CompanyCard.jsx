@@ -13,15 +13,15 @@ export default function CompanyCard({ title, description, image, link }) {
       <CardMedia
       component="img"
       height="180"
-      image={`/${link}.jpg`}  // Dynamic image
+      image={`https://picsum.photos/id/${link}/200`}
       alt={`${title} logo`}
       />
       <CardContent>
       <Typography gutterBottom variant="h5" component="div">
-        {title}  // Dynamic title
+        {title}
       </Typography>
       <Typography variant="body2" color="text.secondary">
-        {description}  // Dynamic description
+        {description}
       </Typography>
       </CardContent>
     </CardActionArea>

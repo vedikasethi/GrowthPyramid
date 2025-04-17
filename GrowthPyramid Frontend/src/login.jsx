@@ -23,7 +23,7 @@ export default function Login() {
     }
 
     try {
-      const response = await fetch("https://localhost:8080/login", {
+      const response = await fetch("https://309168be-6c2b-4bd4-a582-2d144a24d4bb.mock.pstmn.io/api/collaboration/respond/4?status=ACCEPTED", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

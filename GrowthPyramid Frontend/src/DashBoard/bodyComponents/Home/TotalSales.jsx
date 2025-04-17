@@ -9,37 +9,36 @@ export default function TotalSales() {
 
   useEffect(() => {
     async function fetchData() {
-      const user = localStorage.getItem("company");
-      if (user) {
-        const user = JSON.parse(user);
-      try {
-        const response = await axios.get("https://localhost:8080/api/analytics/totalsales/" + user.companyId);
-        const data = response.data;
+      const userString = localStorage.getItem("company"); // Renamed to avoid conflict
+      if (userString) {
+        const user = JSON.parse(userString); // Use a different name for the parsed object
+        try {
+          const response = await axios.get("http://localhost:8080/api/analytics/totalsalespermonth/" + user.companyId);
+          const data = response.data;
 
-        // Sample API response structure:
-        // {
-        //   "options": {
-        //     "chart": {
-        //       "id": "basic-line"
-        //     },
-        //     "xaxis": {
-        //       "categories": ["Jan", "Feb", "Mar", "Apr", "May"]
-        //     }
-        //   },
-        //   "series": [
-        //     {
-        //       "name": "Sales",
-        //       "data": [30, 40, 35, 50, 49]
-        //     }
-        //   ]
-        // }
+          // Transform the API response to match the required format
+          const categories = data.map(item => item[0]); // Extract month names
+          const seriesData = data.map(item => item[1]); // Extract sold quantity amounts
 
-        // Assuming the API response contains `options` and `series` data
-        setOptions(data.options);
-        setSeries(data.series);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }}
+          setOptions({
+            chart: {
+              id: "basic-line",
+            },
+            xaxis: {
+              categories: categories,
+            },
+          });
+
+          setSeries([
+            {
+              name: "Sales",
+              data: seriesData,
+            },
+          ]);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      }
     }
 
     fetchData();
